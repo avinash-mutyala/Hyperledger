@@ -1,0 +1,54 @@
+body,html{
+	width:100%;
+	height:100%;
+}
+.page{
+	width:100%;
+	height:100%;
+}
+.page_header,.expHeader,.impHeader,.bankHeader{
+	border: 1px solid rgba(255,255,255,.05);
+	position: relative;
+	height: 8%;
+	width: 100%;
+	background-color:#ffffff;
+}
+.page_R1,.expDetailsR1,.impDetailsR1,bankDetailsR1{
+	background: #ffffff;
+	border: 1px solid rgba(0,0,0,.05);
+	position: relative;
+	height: 80%;
+	width: 100%;
+}
+.page_footer{
+	background: #ffffff;
+	border: 1px solid rgba(0,0,0,.05);
+	position: relative;
+	height: 8%;
+	width: 100%;
+}
+.page_Details {
+	border: 1px solid rgba(0,0,0,.05);
+  padding: 10px;
+	width:100%;
+	height: 100%;
+	box-sizing: border-box;
+	text-align: center;
+}
+.expDetailsC1,.expDetailsC1,expDetailsC1{
+
+}
+h5{
+	text-align: center;
+	color:#ffd162;
+	padding-top: 3px;
+    padding-bottom: 3px;
+	font-size:16px;
+	font-weight:700;
+	letter-spacing:0.25px;
+	line-height:20px;
+}
+.loginData{
+	border: 1px solid rgba(0,0,0,.05);
+  display: inline-table;
+}

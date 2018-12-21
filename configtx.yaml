@@ -1,0 +1,106 @@
+# Organizations
+
+Organizations:
+
+  - &OrdererOrg
+    Name: OrderingService
+    ID: OrdererMSP
+    MSPDir: crypto-config/ordererOrganizations/group2.com/msp
+
+  - &Honda
+    Name: HondaMSP
+    ID: HondaMSP
+    MSPDir: crypto-config/peerOrganizations/honda.group2.com/msp
+    AnchorPeers:
+      - Host: peer0.honda.group2.com
+        Port: 7051
+
+  - &Hero
+    Name: HeroMSP
+    ID: HeroMSP
+    MSPDir: crypto-config/peerOrganizations/hero.group2.com/msp
+    AnchorPeers:
+      - Host: peer0.hero.group2.com
+        Port: 7051
+
+  - &Axis
+    Name: AxisMSP
+    ID: AxisMSP
+    MSPDir: crypto-config/peerOrganizations/axis.group2.com/msp
+    AnchorPeers:
+      - Host: peer0.axis.group2.com
+        Port: 7051
+
+  - &Emirites
+    Name: EmiritesMSP
+    ID: EmiritesMSP
+    MSPDir: crypto-config/peerOrganizations/emirites.group2.com/msp
+    AnchorPeers:
+      - Host: peer0.emirites.group2.com
+        Port: 7051
+
+# Orderer
+
+Orderer: &OrdererDefaults
+
+  OrdererType: solo
+  Addresses: 
+    - orderer.group2.com:7050
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  Kafka:
+    Brokers: 
+      - 127.0.0.1:9092
+
+  Organizations:
+
+# Application
+
+Application: &ApplicationDefaults
+
+  Organizations:
+
+# Capabilities
+
+Capabilities:
+    Global: &ChannelCapabilities
+        V1_1: true
+    Orderer: &OrdererCapabilities
+        V1_1: true
+    Application: &ApplicationCapabilities
+        V1_1: true
+
+# Profiles
+
+Profiles:
+    OrdererGenesis:
+      Capabilities:
+        <<: *ChannelCapabilities
+      Orderer:
+        <<: *OrdererDefaults
+        Organizations:
+          - *OrdererOrg
+        Capabilities:
+          <<: *OrdererCapabilities
+      Consortiums:
+        Group2Consortium:
+          Organizations:
+            - *Honda
+            - *Hero
+            - *Axis
+            - *Emirites
+    channelgroup2:
+      Consortium: Group2Consortium
+      Application:
+        <<: *ApplicationDefaults
+        Organizations:
+            - *Honda
+            - *Hero
+            - *Axis
+            - *Emirites
+        Capabilities:
+          <<: *ApplicationCapabilities
+

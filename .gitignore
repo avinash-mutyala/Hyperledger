@@ -1,0 +1,4 @@
+/chaincode/pkg/
+/chaincode/src/github.com/
+/chaincode/src/hyperledger/
+/client/node_modules/

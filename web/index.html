@@ -1,0 +1,211 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hyperledger Fabric Tuna Application</title>
+    <link rel="icon" href="favicon.png" type="image/gif">
+
+    <!-- require jquery and bootstrap scripts -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    
+    <!-- adding style here -->
+    <style type="text/css">
+      header{
+        background-color: lightgray;
+        font-size:20px;
+        padding:15px;
+      }
+      header, .form-group{
+        margin-bottom: 3%;
+      }
+      .form-group{
+        width:50%;
+      }
+      #body{
+        margin-left:3%;
+        margin-right:3%;
+      }
+      .form-control{
+        margin: 8px;
+      }
+      #right_header{
+        width:20%;
+        font-size:15px;
+        margin-right:0px;
+      }
+      #left_header{
+        margin-left:0;
+        width:40%;
+        display:inline-block;
+      } 
+      #id {
+        width:49%;
+        display: inline-block;
+      }
+      table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+      }
+      td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+      }
+      tr:nth-child(even) {
+          background-color: #dddddd;
+      }
+    </style>
+  </head>
+  <body ng-app="application" ng-controller="appController">
+    <header>
+      <div id="left_header">Hyperledger Fabric Tuna Application</div>
+      <i id="right_header">Example Blockchain Application for Introduction to Hyperledger Fabric LFS171x</i>
+    </header>
+
+    <div id="body">
+   
+      <div class="form-group">
+        <label>Query a Specific loc</label><br>
+        <h5 style="color:red;margin-bottom:2%" id="error_query">Error: Please enter a valid loc Id</h5>
+        
+        Enter a catch number: <input id="createName" class="form-control" type="text" placeholder="Ex: 3" ng-model="loc_id">
+        <input id="querySubmit" type="submit" value="Query" class="btn btn-primary" ng-click="queryLC()"> 
+</div>
+      <table id="query_tuna" class="table" align="center">
+
+        <tr>
+         <th>	LC Id           	</th>
+<th>	Product Desc    	</th>
+<th>	ProductWeight  	</th>
+<th>	ProductVol     	</th>
+<th>	ExpiryDate     	</th>
+<th>	IssueDate      	</th>
+<th>	Buyer          	</th>
+<th>	BuyerAddress   	</th>
+<th>	BuyerBank      	</th>
+<th>	Seller         	</th>
+<th>	SellerAddress  	</th>
+<th>	SellerBank     	</th>
+<th>	ShipmentFrom   	</th>
+<th>	ShipmentTo     	</th>
+<th>	Amount         	</th>
+<th>	Quantity       	</th>
+<th>	PresentationPeriodInDays	</th>
+<th>	Status         	</th>
+
+        </tr>
+        <tr>
+          <td>{{loc_result.lcId}}</td>
+          <td>{{loc_result.prodDesc}}</td>
+          <td>{{loc_result.prodWeight}}</td>
+          <td>{{loc_result.prodVol}}</td>
+ 	<td><input type="text" name="qnty" placeholder="Enter expiry date" ng-model="loc_result.expiryDate"></td>
+          <td><input type="text" name="qnty" placeholder="Enter issue date" ng-model="loc_result.issueDate"></td>
+          <td>{{loc_result.buyer}}</td>
+          <td>{{loc_result.bAdd}}</td>
+ 	<td>{{loc_result.bBank}}</td>
+          <td>{{loc_result.seller}}</td>
+          <td>{{loc_result.sAdd}}</td>
+          <td>{{loc_result.sBank}}</td>
+ 	<td>{{loc_result.shipFrom}}</td>
+          <td>{{loc_result.shipTo}}</td>
+          <td>{{loc_result.amount}}</td>
+          <td>{{loc_result.qnty}}</td>
+          <td>{{loc_result.presentationInDays}}</td>
+          <td>{{loc_result.status}}</td>
+        </tr>
+      </table>
+ <input id="issueSubmit" type="submit" value="issue" class="btn btn-primary" ng-click="issueLC()"> 
+      <div class="form-group">
+        <label>Request Letter of Credit</label>
+        <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{loc_created}}</h5>
+        <br>
+ <table>
+                  <tr>
+                    <td>LCId</td>
+                    <td><input type="text" name="lcid" placeholder="Enter the LOC ID" ng-model="loc.id"></td>
+                  </tr>
+                  <tr>
+                    <td>Commodity Description</td>
+                    <td><input type="text" name="commDesc" placeholder="Commodity Description??" ng-model="loc.prodesc"></td>
+                  </tr>
+                  <tr>
+                    <td>Dimmensions</td>
+                    <td><input type="text" name="commWeight" placeholder="Total Weight" ng-model="loc.weight"></td>
+                    <td><input type="text" name="commVolume" placeholder="Total Volume" ng-model="loc.vol"></td>
+                  </tr>
+                  <tr>
+                    <td>Importer</td>
+                    <td><input type="text" name="importer" placeholder="Please type importer details" ng-model="loc.buyer"></td>
+                  </tr>
+<tr>
+                    <td>Importer Address</td>
+                    <td><input type="text" name="importeradd" placeholder="Please type importer details" ng-model="loc.buyeradd"></td>
+                  </tr>
+                  <tr>
+                    <td>Importer Bank</td>
+                    <td><input type="text" name="imptBank" placeholder="Who will give you LOC?" ng-model="loc.buyerbank"></td>
+                  </tr>
+ <tr>
+                    <td>Exporter</td>
+                    <td><input type="text" name="exporter" placeholder="Please type importer details" ng-model="loc.seller"></td>
+                  </tr>
+<tr>
+                    <td>Exporter Address</td>
+                    <td><input type="text" name="exporteradd" placeholder="Please type importer details" ng-model="loc.selleradd"></td>
+                  </tr>
+                  <tr>
+                    <td>Exporter Bank</td>
+                    <td><input type="text" name="exporterBank" placeholder="Who will give you LOC?" ng-model="loc.sellerbank"></td>
+                  </tr>
+                  <tr>
+                    <td>Shipment From</td>
+                    <td><input type="text" name="portOrigin" placeholder="Tell us about Origin Port" ng-model="loc.shipfrom"></td>
+                  </tr>
+                  <tr>
+                    <td>Shipment To</td>
+                    <td><input type="text" name="loadPort" placeholder="Port of Loading" ng-model="loc.shipto"></td>
+                  </tr>
+<tr>
+                    <td>Quantity</td>
+                    <td><input type="text" name="qnty" placeholder="Tell us about Origin Port" ng-model="loc.qnty"></td>
+                  </tr>
+                  <tr>
+                    <td>Amount</td>
+                    <td><input type="text" name="amt" placeholder="Port of Loading" ng-model="loc.amt"></td>
+                  </tr>
+<tr>
+                    <td>Presentation Days</td>
+                    <td><input type="text" name="presentdays" placeholder="Tell us about Origin Port" ng-model="loc.presentdays"></td>
+                  </tr>
+</table>
+          <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="requestLC()"> 
+      </div>
+
+ <div class="form-group">
+        <label>accept a Specific loc</label><br>
+        <h5 style="color:red;margin-bottom:2%" id="error_query">Error: Please enter a valid loc Id</h5>
+        
+        Enter a catch number: <input id="createName" class="form-control" type="text" placeholder="Ex: 3" ng-model="aloc_id">
+        <input id="acceptSubmit" type="submit" value="Query" class="btn btn-primary" ng-click="acceptLC()"> 
+</div>
+
+    <!--  <div class="form-group">
+        <label>Change Tuna Holder</label><br>
+        <h5 style="color:green;margin-bottom:2%" id="success_holder">Success! Tx ID: {{change_holder}}</h5>
+        <h5 style="color:red;margin-bottom:2%" id="error_holder">Error: Please enter a valid Tuna Id</h5>
+        Enter a catch id between 1 and 10: <input class="form-control" name="assetSelect" placeholder="Ex: 1" ng-model="holder.id">
+        Enter name of new holder: <input class="form-control" name="assetSelect" placeholder="Ex: Barry" ng-model="holder.name">
+        <input id="transferSubmit" type="submit" value="Change" class="btn btn-primary" ng-click="changeHolder()">
+      </div>
+-->
+    </div>
+  </body>
+    <!-- requiring the angular page -->
+    <script type="text/javascript" src="app.js"> </script>
+</html>

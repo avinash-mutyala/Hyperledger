@@ -1,0 +1,38 @@
+OrdererOrgs:
+  - Name: OrdererService
+    Domain: group2.com
+    Specs:
+      - Hostname: orderer
+
+PeerOrgs:
+  - Name: Honda
+    Domain: honda.group2.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+
+  - Name: Hero
+    Domain: hero.group2.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+
+  - Name: Axis
+    Domain: axis.group2.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+
+  - Name: Emirites
+    Domain: emirites.group2.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 1

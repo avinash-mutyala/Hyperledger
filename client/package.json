@@ -1,0 +1,20 @@
+{
+    "name": "loc-app",
+    "version": "1.0.0",
+    "description": "Hyperledger Fabric Trade finance Application",
+    "main": "server.js",
+    "dependencies": {
+        "angular": "^1.7.5",
+        "body-parser": "^1.18.3",
+        "ejs": "^2.6.1",
+        "express": "^4.16.4",
+        "fabric-ca-client": "^1.3.0",
+        "fabric-client": "^1.3.0",
+        "grpc": "^1.17.0"
+    },
+    "license": "Apache-2.0",
+    "keywords": [
+        "Hyperledger",
+        "Fabric"
+    ]
+}

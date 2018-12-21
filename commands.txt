@@ -1,0 +1,31 @@
+docker-compose -f docker-compose.yaml up
+
+docker exec -it cli bash
+peer channel create -o orderer.group2.com:7050 -c group2channel -f /etc/hyperledger/configtx/group2channel.tx
+
+export CORE_PEER_ADDRESS=peer0.honda.group2.com:7051
+export CORE_PEER_LOCALMSPID=HondaMSP
+export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/honda.group2.com/users/Admin@honda.group2.com/msp
+peer channel join -b group2channel.block
+
+export CORE_PEER_ADDRESS=peer0.hero.group2.com:7051
+export CORE_PEER_LOCALMSPID=HeroMSP
+export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/axis.group2.com/users/Admin@hero.group2.com/msp
+
+peer channel join -b group2channel.block
+
+export CORE_PEER_ADDRESS=peer0.axis.group2.com:7051
+export CORE_PEER_LOCALMSPID=AxisMSP
+export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/axis.group2.com/users/Admin@axis.group2.com/msp
+peer channel join -b group2channel.block
+
+export CORE_PEER_ADDRESS=peer0.emirites.group2.com:7051
+export CORE_PEER_LOCALMSPID=EmiritesMSP
+export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/emirites.group2.com/users/Admin@emirites.group2.com/msp
+peer channel join -b group2channel.block
+
+export CORE_PEER_ADDRESS=peer0.honda.group2.com:7051
+export CORE_PEER_LOCALMSPID=HondaMSP
+export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/honda.group2.com/users/Admin@honda.group2.com/msp
+peer chaincode install -n loc -v 1.0 -p src/loc -l golang
+

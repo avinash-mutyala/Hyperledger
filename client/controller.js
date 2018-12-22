@@ -150,9 +150,10 @@ return{
 		    // check the results in the order the promises were added to the promise all list
 		    if (results && results[0] && results[0].status === 'SUCCESS') {
 		        console.log('Successfully sent transaction to the orderer.');
-		        res.send(tx_id.getTransactionID());
+		        
 		    } else {
 		        console.error('Failed to order the transaction. Error code: ' + response.status);
+			res.send('Failed to request loc');
 		    }
 
 		    if(results && results[1] && results[1].event_status === 'VALID') {
@@ -160,9 +161,11 @@ return{
 		        res.send(tx_id.getTransactionID());
 		    } else {
 		        console.log('Transaction failed to be committed to the ledger due to ::'+results[1].event_status);
+			res.send('Failed to request loc');
 		    }
 		}).catch((err) => {
 		    console.error('Failed to invoke successfully :: ' + err);
+			res.send('Failed to request loc');
 		});
 	},
 
@@ -301,20 +304,22 @@ console.log("issue");
 		    console.log('Send transaction promise and event listener promise have completed');
 		    // check the results in the order the promises were added to the promise all list
 		    if (results && results[0] && results[0].status === 'SUCCESS') {
-		        console.log('Successfully sent transaction to the orderer.');
-		        res.send(tx_id.getTransactionID());
+		        console.log('Successfully sent transaction to the orderer.');		        
 		    } else {
 		        console.error('Failed to order the transaction. Error code: ' + response.status);
+			res.send('Failed to issue loc');
 		    }
 
 		    if(results && results[1] && results[1].event_status === 'VALID') {
 		        console.log('Successfully committed the change to the ledger by the peer');
-		        res.send(tx_id.getTransactionID());
+			res.send(tx_id.getTransactionID());
 		    } else {
 		        console.log('Transaction failed to be committed to the ledger due to ::'+results[1].event_status);
+			res.send('Failed to issue loc');
 		    }
 		}).catch((err) => {
-		    console.error('Failed to invoke successfully :: ' + err);
+		    console.log('Failed to issue successfully :: ' + err);
+			res.send('Failed to issue loc');
 		});
 	
 	},
@@ -380,7 +385,7 @@ console.log("get");
 		    if (query_responses && query_responses.length == 1) {
 		        if (query_responses[0] instanceof Error) {
 		            console.error("error from query = ", query_responses[0]);
-		            res.send("Could not locate tuna")
+		            res.send("Could not locate loc")
 		            
 		        } else {
 		            console.log("Response is ", query_responses[0].toString());
@@ -388,11 +393,11 @@ console.log("get");
 		        }
 		    } else {
 		        console.log("No payloads were returned from query");
-		        res.send("Could not locate tuna")
+		            res.send("Could not locate loc")
 		    }
 		}).catch((err) => {
 		    console.error('Failed to query successfully :: ' + err);
-		    res.send("Could not locate tuna")
+		            res.send("Could not locate loc")
 		});
 	},
 ////////////////////////////////////////////////////////////////////////
@@ -531,9 +536,10 @@ console.log("accept");
 		    // check the results in the order the promises were added to the promise all list
 		    if (results && results[0] && results[0].status === 'SUCCESS') {
 		        console.log('Successfully sent transaction to the orderer.');
-		        res.send(tx_id.getTransactionID());
+		        //res.send(tx_id.getTransactionID());
 		    } else {
 		        console.error('Failed to order the transaction. Error code: ' + response.status);
+			res.send("Could not accept loc")
 		    }
 
 		    if(results && results[1] && results[1].event_status === 'VALID') {
@@ -541,9 +547,11 @@ console.log("accept");
 		        res.send(tx_id.getTransactionID());
 		    } else {
 		        console.log('Transaction failed to be committed to the ledger due to ::'+results[1].event_status);
+			res.send("Could not accept loc")		
 		    }
 		}).catch((err) => {
 		    console.error('Failed to invoke successfully :: ' + err);
+			res.send("Could not accept loc")
 		});
 }
 }

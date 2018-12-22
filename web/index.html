@@ -1,211 +1,361 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
-
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Hyperledger Fabric Tuna Application</title>
-    <link rel="icon" href="favicon.png" type="image/gif">
 
+<head>
+    <title>Hyperledger Fabric Trade Finance Application</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="favicon.png" type="image/gif">
     <!-- require jquery and bootstrap scripts -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
-    
     <!-- adding style here -->
     <style type="text/css">
-      header{
-        background-color: lightgray;
-        font-size:20px;
-        padding:15px;
-      }
-      header, .form-group{
-        margin-bottom: 3%;
-      }
-      .form-group{
-        width:50%;
-      }
-      #body{
-        margin-left:3%;
-        margin-right:3%;
-      }
-      .form-control{
-        margin: 8px;
-      }
-      #right_header{
-        width:20%;
-        font-size:15px;
-        margin-right:0px;
-      }
-      #left_header{
-        margin-left:0;
-        width:40%;
-        display:inline-block;
-      } 
-      #id {
-        width:49%;
-        display: inline-block;
-      }
-      table {
-          font-family: arial, sans-serif;
-          border-collapse: collapse;
-          width: 100%;
-      }
-      td, th {
-          border: 1px solid #dddddd;
-          text-align: left;
-          padding: 8px;
-      }
-      tr:nth-child(even) {
-          background-color: #dddddd;
-      }
+        header {
+            background-color: lightgray;
+            font-size: 20px;
+            padding: 15px;
+        }       
+
+        #body {
+            margin-left: 3%;
+            margin-right: 3%;
+        }
+
+        #right_header {
+            width: 20%;
+            font-size: 15px;
+            margin-right: 0px;
+        }
+
+        #left_header {
+            margin-left: 0;
+            width: 40%;
+            display: inline-block;
+        }
+
+        #id {
+            width: 49%;
+            display: inline-block;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td.label {
+            width: 100px;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
     </style>
-  </head>
-  <body ng-app="application" ng-controller="appController">
-    <header>
-      <div id="left_header">Hyperledger Fabric Tuna Application</div>
-      <i id="right_header">Example Blockchain Application for Introduction to Hyperledger Fabric LFS171x</i>
-    </header>
+</head>
+
+<body ng-app="application" ng-controller="appController">
+    <!--<header>
+        <div id="left_header">Trade Finance Application</div>
+    </header>-->
 
     <div id="body">
-   
-      <div class="form-group">
-        <label>Query a Specific loc</label><br>
-        <h5 style="color:red;margin-bottom:2%" id="error_query">Error: Please enter a valid loc Id</h5>
-        
-        Enter a catch number: <input id="createName" class="form-control" type="text" placeholder="Ex: 3" ng-model="loc_id">
-        <input id="querySubmit" type="submit" value="Query" class="btn btn-primary" ng-click="queryLC()"> 
-</div>
-      <table id="query_tuna" class="table" align="center">
+        <div class="page">
+            <div class="page_header">
+                <img src="./assets/images/Trade-Finance.jpg" style="width:100%"></img>
+            </div>
+            <div ng-show="see==modes.Login" style="margin:20px;">
+                <h2 class="text-center"> Login</h2><br>
+                <div class="col-md-4 col-lg-4 col-md-offset-4 col-md-offset-4" style="border:1px solid grey;padding: 20px;">
+                    <!-- Start form -->
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">UserName</label>
+                            <input class="form-control" type="text" id="username" name="uname" placeholder="What's your Name?"
+                                ng-model="loginId">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="Enter your Secret Key"
+                                ng-model="password">
+                        </div>
+                        <div class="form-check">
+                            <button type="submit" class="btn btn-primary" ng-click="login()">Submit</button>
+                        </div>
+                    </form>
+                    <!-- End form -->
+                </div>
+            </div>
 
-        <tr>
-         <th>	LC Id           	</th>
-<th>	Product Desc    	</th>
-<th>	ProductWeight  	</th>
-<th>	ProductVol     	</th>
-<th>	ExpiryDate     	</th>
-<th>	IssueDate      	</th>
-<th>	Buyer          	</th>
-<th>	BuyerAddress   	</th>
-<th>	BuyerBank      	</th>
-<th>	Seller         	</th>
-<th>	SellerAddress  	</th>
-<th>	SellerBank     	</th>
-<th>	ShipmentFrom   	</th>
-<th>	ShipmentTo     	</th>
-<th>	Amount         	</th>
-<th>	Quantity       	</th>
-<th>	PresentationPeriodInDays	</th>
-<th>	Status         	</th>
+            <div ng-show="see==modes.Bank" style="margin:20px;">
+                <h2 class="text-center"> Bank Dashboard</h2><br>
+                <div><a href="#" ng-click="logout()" style="float: right">logout</a></div>
+                <form class="form-group col-md-9">
+                    <label class="col-md-3 control-label" for="queryloc">Enter a loc number: </label>
+                    <div class="col-md-6">
+                        <input id="queryloc" class="form-control" type="text" placeholder="Ex: loc3" ng-model="loc_id"></div>
+                    <div class="col-md-3 align-right"> <input id="querySubmit" type="submit" value="Query" class="btn btn-primary"
+                            ng-click="queryLC()">
+                    </div>
+                </form>
+                <table id="query_loc" class="table" align="center">
+                    <tr>
+                        <td>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> LOC Id :</label><label class="control-label col-md-9 col-lg-9">{{loc_result.lcId}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Product Description :</label><label
+                                    class="control-label col-md-9 col-lg-9">{{loc_result.prodDesc}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Product Weight :</label><label class="control-label col-md-9 col-lg-9">{{loc_result.prodWeight}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Product Volume :</label><label class="control-label col-md-9 col-lg-9">{{loc_result.prodVol}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Buyer :</label><label class="control-label col-md-9 col-lg-9">{{loc_result.buyer}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Buyer Address :</label><label class="control-label col-md-9 col-lg-9">{{loc_result.bAdd}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Buyer Bank :</label><label class="control-label col-md-9 col-lg-9">{{loc_result.bBank}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Seller :</label><label class="control-label col-md-9 col-lg-9">{{loc_result.seller}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Seller Address :</label><label class="control-label col-md-9 col-lg-9">{{loc_result.sAdd}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Seller Bank :</label><label class="control-label col-md-9 col-lg-9">{{loc_result.sBank}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Shipment From :</label><label class="control-label col-md-9 col-lg-9">{{loc_result.shipFrom}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Shipment To :</label><label class="control-label col-md-9 col-lg-9">{{loc_result.shipTo}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Amount :</label><label class="control-label col-md-9 col-lg-9">{{loc_result.amount}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Quantity :</label><label class="control-label col-md-9 col-lg-9">{{loc_result.qnty}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Present Period :</label><label class="control-label col-md-9 col-lg-9">{{loc_result.presentationInDays}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Status :</label><label class="control-label col-md-9 col-lg-9">{{loc_result.status}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Expiry Date :</label>
+                                <div class="col-md-9 col-lg-9"><input type="text" class="form-control" name="qnty"
+                                        placeholder="Enter expiry date(MMDDYYYY)" ng-model="loc_result.expiryDate"></div><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Issue Date </label>
+                                <div class="col-md-9 col-lg-9"><input type="text" class="form-control" name="qnty"
+                                        placeholder="Enter issue date(MMDDYYYY)" ng-model="loc_result.issueDate"></div><br>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input id="issueSubmit" type="submit" value="Issue" class="btn btn-primary" ng-click="issueLC()"></td>
+                    </tr>
+                </table>
 
-        </tr>
-        <tr>
-          <td>{{loc_result.lcId}}</td>
-          <td>{{loc_result.prodDesc}}</td>
-          <td>{{loc_result.prodWeight}}</td>
-          <td>{{loc_result.prodVol}}</td>
- 	<td><input type="text" name="qnty" placeholder="Enter expiry date" ng-model="loc_result.expiryDate"></td>
-          <td><input type="text" name="qnty" placeholder="Enter issue date" ng-model="loc_result.issueDate"></td>
-          <td>{{loc_result.buyer}}</td>
-          <td>{{loc_result.bAdd}}</td>
- 	<td>{{loc_result.bBank}}</td>
-          <td>{{loc_result.seller}}</td>
-          <td>{{loc_result.sAdd}}</td>
-          <td>{{loc_result.sBank}}</td>
- 	<td>{{loc_result.shipFrom}}</td>
-          <td>{{loc_result.shipTo}}</td>
-          <td>{{loc_result.amount}}</td>
-          <td>{{loc_result.qnty}}</td>
-          <td>{{loc_result.presentationInDays}}</td>
-          <td>{{loc_result.status}}</td>
-        </tr>
-      </table>
- <input id="issueSubmit" type="submit" value="issue" class="btn btn-primary" ng-click="issueLC()"> 
-      <div class="form-group">
-        <label>Request Letter of Credit</label>
-        <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{loc_created}}</h5>
-        <br>
- <table>
-                  <tr>
-                    <td>LCId</td>
-                    <td><input type="text" name="lcid" placeholder="Enter the LOC ID" ng-model="loc.id"></td>
-                  </tr>
-                  <tr>
-                    <td>Commodity Description</td>
-                    <td><input type="text" name="commDesc" placeholder="Commodity Description??" ng-model="loc.prodesc"></td>
-                  </tr>
-                  <tr>
-                    <td>Dimmensions</td>
-                    <td><input type="text" name="commWeight" placeholder="Total Weight" ng-model="loc.weight"></td>
-                    <td><input type="text" name="commVolume" placeholder="Total Volume" ng-model="loc.vol"></td>
-                  </tr>
-                  <tr>
-                    <td>Importer</td>
-                    <td><input type="text" name="importer" placeholder="Please type importer details" ng-model="loc.buyer"></td>
-                  </tr>
-<tr>
-                    <td>Importer Address</td>
-                    <td><input type="text" name="importeradd" placeholder="Please type importer details" ng-model="loc.buyeradd"></td>
-                  </tr>
-                  <tr>
-                    <td>Importer Bank</td>
-                    <td><input type="text" name="imptBank" placeholder="Who will give you LOC?" ng-model="loc.buyerbank"></td>
-                  </tr>
- <tr>
-                    <td>Exporter</td>
-                    <td><input type="text" name="exporter" placeholder="Please type importer details" ng-model="loc.seller"></td>
-                  </tr>
-<tr>
-                    <td>Exporter Address</td>
-                    <td><input type="text" name="exporteradd" placeholder="Please type importer details" ng-model="loc.selleradd"></td>
-                  </tr>
-                  <tr>
-                    <td>Exporter Bank</td>
-                    <td><input type="text" name="exporterBank" placeholder="Who will give you LOC?" ng-model="loc.sellerbank"></td>
-                  </tr>
-                  <tr>
-                    <td>Shipment From</td>
-                    <td><input type="text" name="portOrigin" placeholder="Tell us about Origin Port" ng-model="loc.shipfrom"></td>
-                  </tr>
-                  <tr>
-                    <td>Shipment To</td>
-                    <td><input type="text" name="loadPort" placeholder="Port of Loading" ng-model="loc.shipto"></td>
-                  </tr>
-<tr>
-                    <td>Quantity</td>
-                    <td><input type="text" name="qnty" placeholder="Tell us about Origin Port" ng-model="loc.qnty"></td>
-                  </tr>
-                  <tr>
-                    <td>Amount</td>
-                    <td><input type="text" name="amt" placeholder="Port of Loading" ng-model="loc.amt"></td>
-                  </tr>
-<tr>
-                    <td>Presentation Days</td>
-                    <td><input type="text" name="presentdays" placeholder="Tell us about Origin Port" ng-model="loc.presentdays"></td>
-                  </tr>
-</table>
-          <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="requestLC()"> 
-      </div>
+            </div>
 
- <div class="form-group">
-        <label>accept a Specific loc</label><br>
-        <h5 style="color:red;margin-bottom:2%" id="error_query">Error: Please enter a valid loc Id</h5>
-        
-        Enter a catch number: <input id="createName" class="form-control" type="text" placeholder="Ex: 3" ng-model="aloc_id">
-        <input id="acceptSubmit" type="submit" value="Query" class="btn btn-primary" ng-click="acceptLC()"> 
-</div>
+            <div ng-show="see==modes.Buyer" style="margin:20px;">
+                <h2 class="text-center"> Importer Dashboard</h2><br>
+                <div><a href="#" ng-click="logout()" style="float: right">logout</a></div>
+                <div class="form-group" style="text-align:center">
+                    <label>Request Letter of Credit</label>
+                    <br>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-10">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label for="LCId" class="control-label col-sm-2">LC ID</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="lcid" placeholder="Enter the LOC ID"
+                                                ng-model="loc.id">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Commodity Description" class="control-label col-sm-2">Commodity
+                                            Description</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="commDesc" placeholder="Commodity Description??"
+                                                ng-model="loc.prodesc">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Dimmensions" class="control-label col-sm-2">Chargable Weight</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="commWeight" placeholder="Chargable Weight"
+                                                ng-model="loc.weight">
 
-    <!--  <div class="form-group">
-        <label>Change Tuna Holder</label><br>
-        <h5 style="color:green;margin-bottom:2%" id="success_holder">Success! Tx ID: {{change_holder}}</h5>
-        <h5 style="color:red;margin-bottom:2%" id="error_holder">Error: Please enter a valid Tuna Id</h5>
-        Enter a catch id between 1 and 10: <input class="form-control" name="assetSelect" placeholder="Ex: 1" ng-model="holder.id">
-        Enter name of new holder: <input class="form-control" name="assetSelect" placeholder="Ex: Barry" ng-model="holder.name">
-        <input id="transferSubmit" type="submit" value="Change" class="btn btn-primary" ng-click="changeHolder()">
-      </div>
--->
-    </div>
-  </body>
-    <!-- requiring the angular page -->
-    <script type="text/javascript" src="app.js"> </script>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Dimmensions" class="control-label col-sm-2">Chargable Volume</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="commVolume" placeholder="Chargable Volume"
+                                                ng-model="loc.vol">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Importer" class="control-label col-sm-2">Importer</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="importer" placeholder="Enter Importer"
+                                                ng-model="loc.buyer">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Importer Address" class="control-label col-sm-2">Importer Address</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="importeradd" placeholder="Enter Importer details"
+                                                ng-model="loc.buyeradd">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="Importer Bank" class="control-label col-sm-2">Importer Bank</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="imptBank" placeholder="Enter Importer Bank"
+                                                ng-model="loc.buyerbank">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Exporter" class="control-label col-sm-2">Exporter</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="exporter" placeholder="Enter Exporter"
+                                                ng-model="loc.seller">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Exporter Address" class="control-label col-sm-2">Exporter Address</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="exporteradd" placeholder="Enter Exporter Address"
+                                                ng-model="loc.selleradd">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Exporter Bank" class="control-label col-sm-2">Exporter Bank</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="exporterBank" placeholder="Enter Exporter Bank"
+                                                ng-model="loc.sellerbank">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="Shipment From" class="control-label col-sm-2">Shipment From</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="portOrigin" placeholder="Enter Shipment From"
+                                                ng-model="loc.shipfrom">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Shipment To" class="control-label col-sm-2">Shipment To</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="loadPort" placeholder="Enter Shipment To"
+                                                ng-model="loc.shipto">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Quantity" class="control-label col-sm-2">Quantity</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="qnty" placeholder="Enter Quantity"
+                                                ng-model="loc.qnty">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Amount" class="control-label col-sm-2">Amount</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="amt" placeholder="Enter Amount"
+                                                ng-model="loc.amt">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Presentation Days" class="control-label col-sm-2">Presentation Days</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="presentdays" placeholder="Enter Presentation Days"
+                                                ng-model="loc.presentdays">
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="col-md-6 pull-right">
+                                        <input id="createSubmit" type="submit" value="Create" class="btn btn-primary"
+                                            ng-click="requestLC()">
+                                    </div>
+                                </form>
+                                <div class="clearfix"></div>
+                                <br /><br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="see==modes.Seller" style="margin:20px;">
+                <h2 class="text-center"> Exporter Dashboard</h2><br>
+                <div><a href="#" ng-click="logout()" style="float: right">logout</a></div>
+                <form class="form-group col-md-9">
+                    <label class="col-md-3 control-label" for="queryloc1">Enter a loc number: </label>
+                    <div class="col-md-6">
+                        <input id="queryloc1" class="form-control" type="text" placeholder="Ex: loc3" ng-model="sloc_id">
+                    </div>
+                    <div class="col-md-3 pull-right">
+                        <input id="querySubmit" type="submit" value="Query" class="btn btn-primary" ng-click="querysLC()">
+                    </div>
+                </form>
+                <table id="query_loc" class="table" align="center">
+                    <tr>
+                        <td>
+                            <div class="form-group"><label class="control-label col-md-3 col-lg-3"> LOC Id :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.lcId}}</label><br>
+                            </div>
+                            <div class="form-group"><label class="control-label col-md-3 col-lg-3"> Product Description :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.prodDesc}}</label><br>
+                            </div>                            
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Product Weight :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.prodWeight}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Product Volume :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.prodVol}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Buyer :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.buyer}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Buyer Address :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.bAdd}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Buyer Bank :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.bBank}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Seller :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.seller}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Seller Address :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.sAdd}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Seller Bank :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.sBank}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Shipment From :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.shipFrom}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Shipment To :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.shipTo}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Amount :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.amount}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Quantity :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.qnty}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Present Period :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.presentationInDays}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Status :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.status}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Expiry Date :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.expiryDate}}</label><br>
+                            </div>
+                            <div class="form-group"> <label class="control-label col-md-3 col-lg-3"> Issue Date :</label><label class="control-label col-md-9 col-lg-9">{{sloc_result.issueDate}}</label><br>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input id="acceptSubmit" type="submit" value="Accept" class="btn btn-primary" ng-click="acceptLC()"></td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+</body>
+<!-- requiring the angular page -->
+<script type="text/javascript" src="app.js"> </script>
+
 </html>
